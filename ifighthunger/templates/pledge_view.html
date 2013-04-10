@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% set page = 'PLEDGEVIEW' %}
+{% block title %}I Fight Hunger{% endblock %}
+{% block scripts %}
+{{super()}}
+<script type="text/javascript" src="//api.filepicker.io/v1/filepicker.js"></script>
+<script type="text/javascript" src="//framey.com/javascripts/framey3.js"></script>
+<!-- 1. jquery library -->
+<script  src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"> </script>
+ <script src="//releases.flowplayer.org/5.2.0/flowplayer.min.js"></script>
+<link rel="stylesheet" type="text/css" href="//releases.flowplayer.org/5.2.0/skin/minimalist.css" />
+<script type="text/javascript">
+  var fight_hunger = {
+    facebook_user_id:""
+  }
+  var DEBUG = true;
+
+  var logger = function(e){};
+  if(DEBUG){
+    logger = function(s){console.log(s)};
+  }
+
+ window.fbAsyncInit = function() {
+     	FB.init({
+          appId      : {{config.FACEBOOK_APP_ID}},
+          status     : true, 
+          cookie     : true,
+          xfbml      : true,
+          oauth      : true,
+      	});
+    FB.Event.subscribe('auth.login', function(response) {
+         setTimeout('document.location.reload()',10);
+        //console.log('login'); 
+    });
+
+    FB.Event.subscribe('auth.logout', function(response) {
+        //window.location.reload();
+    });
+
+    FB.Event.subscribe('auth.statusChange', function(response) {
+      fight_hunger.facebook_user_id = response.authResponse.userID;
+      logger(response);
+      FB.api('/me', function(me){console.log(me.name)});
+    });
+  };
+  (function(d){
+     var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+     js = d.createElement('script'); js.id = id; js.async = true;
+     js.src = "//connect.facebook.net/en_US/all.js";
+     d.getElementsByTagName('head')[0].appendChild(js);
+   }(document));
+
+
+  function videoError(a,b){
+    $('#videoHolder').css({'background-color':'rgba(35, 36, 37, 0.88)',height:'300px','background-image':'','text-align':'center',     display:'table' }).empty().removeClass().append('<div style="display: table-cell;vertical-align: middle;"> <h2 style="color:rgba(255,255,255,0.94);"><strong>This video is processing.</strong> In the mean time, browse around.</h2></div>');
+    
+  }
+
+  function postToFeed() {
+
+    // calling the API ...
+    var obj = {
+      method: 'feed',
+      link: document.URL,
+      picture: '{{p.largeLink()}}',
+      name: 'I Fight Hunger',
+      caption: '{{p.message}}',
+      description: 'I am fighting hunger this holiday season, will you join?'
+    };
+  logger(obj);
+
+    function callback(response) {
+      logger(response);
+    }
+
+    FB.ui(obj, callback);
+  }
+
+</script>
+{% endblock%}
+{% block content %}
+  {%if owner %}
+    
+  {% endif %}
+      <div class="jumbotron ">
+  {% if p.hasImage() %}
+        <img class="" src={{p.largeLink()}}>
+  {% elif p.hasVideo()%}
+          <div id="videoHolder" class="flowplayer" style="background-image:url('{{p.smallLink()}}');" onerror="videoError()" showErrors="false">
+             <video src="{{p.framey_mp4_url}}"></video>
+          </div>
+  {% endif %}
+          <p class="lead muted">{{p.message}}</p>
+    <a class="pull-left" onclick='postToFeed(); return false;' href="#">Post to Feed</a>
+    <a class="pull-right" href="{{url_for("pledge")}}">Make your own pledge</a>
+      </div> <!---end jumbotron -->
+
+{% endblock %}

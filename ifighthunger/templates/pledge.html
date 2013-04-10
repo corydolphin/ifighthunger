@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+{% set page = 'PLEDGE' %}
+{% block title %}I Fight Hunger{% endblock %}
+{% block scripts %}
+{{super()}}
+<script type="text/javascript" src="//api.filepicker.io/v1/filepicker.js"></script>
+<script type="text/javascript" src="//framey.com/javascripts/framey3.js"></script>
+<script type="text/javascript">
+  var fight_hunger = {
+    facebook_user_id:"",
+    small:false,
+    large:false
+  }
+  var DEBUG = true;
+
+  var logger = function(e){};
+  if(DEBUG){
+    logger = function(s){console.log(s)};
+  }
+ window.fbAsyncInit = function() {
+     	FB.init({
+          appId      : {{config.FACEBOOK_APP_ID}},
+          status     : true, 
+          cookie     : true,
+          xfbml      : true,
+          oauth      : true,
+      	});
+    FB.Event.subscribe('auth.login', function(response) {
+        setTimeout('document.location.reload()',10);
+        //console.log('login'); 
+    });
+
+    FB.Event.subscribe('auth.logout', function(response) {
+        //window.location.reload();
+    });
+
+    FB.Event.subscribe('auth.statusChange', function(response) {
+      logger(response);
+      fight_hunger.facebook_user_id = response.authResponse.userID;
+      FB.api('/me', function(me){
+     $('<input type="hidden">').attr({
+        name:"email",
+        value: me['email']
+      }).appendTo('#pledgeForm')
+      });
+    });
+  };
+  (function(d){
+     var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+     js = d.createElement('script'); js.id = id; js.async = true;
+     js.src = "//connect.facebook.net/en_US/all.js";
+     d.getElementsByTagName('head')[0].appendChild(js);
+   }(document));
+
+
+
+    var original_FPFile=null;
+  var filePickerPicker = function(){
+    filepicker.setKey("AIXaEIRD6TyT4OrZ53Epgz");
+    filepicker.pick({
+      mimetypes: ['image/*'],
+      container: 'modal',
+      services:['COMPUTER', 'WEBCAM', 'DROPBOX'],
+    },filePickerConvertAndSize, filepickerError);
+
+
+  };
+  var filePickerConvertAndSize = function(FPFile){
+    fight_hunger.small = false;
+    fight_hunger.large = false;
+    filePickerConvertSmall(FPFile);
+    filePickerConvertLarge(FPFile);
+
+  };
+  var filePickerConvertSmall = function(FPFile){
+    $('#imageDisplay').css({
+       'background-image' : 'url(' +  FPFile['url'] + ')',
+       'background-size': 'cover',
+       'background-repeat': 'no-repeat'
+    });
+    logger("Convert Small" + JSON.stringify(FPFile));
+    filepicker.convert(
+        FPFile, 
+        {width:300,height:300,fit:'clip', format:'png'},
+        filePickerStoreSmall,
+        filepickerError);
+
+  };
+
+  var filePickerConvertLarge = function(FPFile){
+    logger("Convert Large" + JSON.stringify(FPFile));
+    filepicker.convert(
+        FPFile, 
+        {format:'png'},
+        filePickerStoreLarge,
+        filepickerError);
+  };
+
+
+  var filePickerStoreSmall = function(FPFile){
+    logger("Store Small" + JSON.stringify(FPFile));
+    filepicker.store(FPFile,{location: 'S3',mimetype: 'image/png'} , filePickerPostToServerSmall, filepickerError);
+  };
+  var filePickerStoreLarge = function(FPFile){
+    logger("Store Large" + JSON.stringify(FPFile));
+    filepicker.store(FPFile,{location: 'S3',mimetype: 'image/png'} , filePickerPostToServerLarge , filepickerError);
+  };
+
+  var filePickerPostToServerSmall = function(FPFile){
+
+     logger("POST TO SERVER SMALL" + JSON.stringify(FPFile));
+     $('<input type="hidden">').attr({
+        name:"small_key",
+        value: FPFile['key']
+      }).appendTo('#pledgeForm');
+          fight_hunger.small = true;
+    //$.ajax({type: "POST",url: "",data: JSON.stringify({large:original_FPFile, small:FPFile}),contentType: "application/json; charset=utf-8", dataType: "json",});
+  };
+  var filePickerPostToServerLarge = function(FPFile){
+
+     logger("POST TO SERVER Large" + JSON.stringify(FPFile));
+     $('<input type="hidden">').attr({
+        name:"large_key",
+        value: FPFile['key']
+      }).appendTo('#pledgeForm');
+          fight_hunger.large = true;
+  };
+
+  var filepickerError = function(FPError){
+    logger(FPError.toString());
+  };
+  
+  var checkForUpload = function(){
+    if(!fight_hunger.small || !fight_hunger.large){
+      setTimeout(checkForUpload,10);
+    }
+    else{
+      $('#pledgeForm').submit();
+      $("#uploadingModal").modal('hide');
+    }
+  };
+  var validateAndPost = function(e){
+    logger(e);
+
+    if(!fight_hunger.small || !fight_hunger.large){
+         checkForUpload();
+         $("#uploadingModal").modal('show');       
+    }
+    else if($('input[name="small_key"]').size() ===0 && $('input[name="large_key"]').size() == 0 &&  $('input[name="FrameyRecorder[framey_mp4_url]"]').first().val().length == 0){
+      $("#errorModal").modal('show');      
+    }
+    else{
+      $('#pledgeForm').submit();
+    }
+  logger($('input[name="small_key"]').size());
+  logger($('input[name="large_key"]').size());
+  logger($('input[name="FrameyRecorder[framey_mp4_url]"]').first().val().length);
+
+  }
+</script>
+{% endblock%}
+{% block content %}
+      <div class="jumbotron">
+        <h1>Make your pledge</h1>
+        <p class="lead muted">Upload a photo, video or message to show your support</p>
+      </div> <!---end jumbotron -->
+
+                 <form id="pledgeForm" class="well row-fluid" action="" method="POST" enctype="multipart/form-data">
+                          {% if not fbUser %}
+                            <div class="control-group">
+                                <h3>Please login using Facebook</h3>
+                                <label class="control-label" for="facebook">We want to reward your activism, this way we know who you are.</label>
+                                <div class="controls">
+                                  <div class="fb-login-button" name="facebook" style="display:inline-block" scope="publish_stream,email" >Login with Facebook</div>
+                                </div>
+                            </div>
+                            {% else %}
+                          <div class="span12">
+                              <button id="imageDisplay" class="span5 img-rounded" type="button" style="background-color:rgba(0, 0, 0, 0.05);;height:240px;border:dashed;text-align: center;vertical-align: middle;" onclick="filePickerPicker()">
+                                <h3 style="text-align:center;margin-top:90px;">Upload a picture</h3>
+                              </button>
+                              <div class="span1" style="text-align:center;">
+                                <h3 style="text-align:center;margin-top:90px;"> or </h3>
+                              </div>
+                              <div class="span4" style="text-align:center;vertical-align: middle;">
+                                  <input type="video" id="FrameyRecorder" data-params="{api_key:'D8WXOD9VGCWXAOGQDZSAPUIIH'}"/>
+                              </div>
+
+                          </div>
+                <div class="span12" style="text-align:center; margin-top:20px">
+                  <div class="span4" style="text-align:center;">
+                    <h3 style="text-align:center;"> Message </h3>
+                    <p>Tell us why this is meaningful</p>
+                  </div>
+
+                  <textarea class="span8" rows="3" name="message"></textarea>
+                </div>
+                <button id="submissionButton" type="button" class="btn btn-large btn-success" style="width:100%;" name="makePledge" onclick="validateAndPost(this)"/> Make your pledge</button><br/>
+                {% endif %}
+                </form>
+
+<div class="modal hide fade" id="errorModal">
+  <div class="modal-header">
+    <button type="button " class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>Whoops</h3>
+  </div>
+  <div class="modal-body">
+    <p>In order to show your activism, you must upload a picture or video!</p>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn btn-primary">Continue</a>
+  </div>
+</div>
+
+<div class="modal hide fade" id="uploadingModal">
+  <div class="modal-header">
+    <button type="button " class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>Patience</h3>
+  </div>
+  <div class="modal-body">
+    <p>We are uploading as fast as we can. Please wait one moment and we will automatically pledge for you.</p>
+    <img style="-webkit-user-select: none" src="{{url_static(filename='img/spinner.gif')}}">
+  </div>
+  <div class="modal-footer">
+  </div>
+</div>
+
+{% endblock %}

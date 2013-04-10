@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% set page = 'PLEDGE' %}
+{% block styles %}
+{{super()}}
+<style>
+.carousel h1{
+  color:white;
+}
+</style>
+{% endblock %}
+{% block title %}I Fight Hunger{% endblock %}
+{% block scripts %}
+{{super()}}
+<script type="text/javascript" src="//api.filepicker.io/v1/filepicker.js"></script>
+<script type="text/javascript" src="//framey.com/javascripts/framey3.js"></script>
+<script type="text/javascript">
+  var fight_hunger = {
+    facebook_user_id:""
+  }
+  var DEBUG = true;
+
+  var logger = function(e){};
+  if(DEBUG){
+    logger = function(s){console.log(s)};
+  }
+
+ window.fbAsyncInit = function() {
+     	FB.init({
+          appId      : {{config.FACEBOOK_APP_ID}},
+          status     : true, 
+          cookie     : true,
+          xfbml      : true,
+          oauth      : true,
+      	});
+    FB.Event.subscribe('auth.login', function(response) {
+        setTimeout('document.location.reload()',10);
+        //console.log('login'); 
+    });
+
+    FB.Event.subscribe('auth.logout', function(response) {
+        //window.location.reload();
+    });
+
+    FB.Event.subscribe('auth.statusChange', function(response) {
+      logger(response);});
+  };
+  (function(d){
+     var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+     js = d.createElement('script'); js.id = id; js.async = true;
+     js.src = "//connect.facebook.net/en_US/all.js";
+     d.getElementsByTagName('head')[0].appendChild(js);
+   }(document));
+
+</script>
+{% endblock%}
+{% block content %}
+      <div class="jumbotron">
+        <h1>Grill Fish</h1>
+        <p class="lead muted">GrillFish is offering a spectacular spread on December 1, 2012. <a href="{{url_static(filename='marketing/grillfish/GFMenu.pdf')}}">Check the menu!</a></p>
+      </div> <!---end jumbotron -->
+
+    <div id="myCarousel" class="carousel slide">
+      <div class="carousel-inner">
+        <div class="item active" href="{{url_for('grillfish')}}">
+          <img src="{{url_static(filename='marketing/grillfish/GrillFishSmall.png')}}" alt="">
+          <div class="container-narrow">
+            <div class="carousel-caption">
+              <h1>GrillFish</h1>
+              <p class="lead">is offering an incredible meal for two to show their support</p>
+            </div>
+          </div>
+        </div>
+        <div class="item" href="{{url_for('grillfish')}}">
+          <img src="{{url_static(filename='marketing/Kitchen.jpg')}}" alt="">
+          <div class="container-narrow">
+            <div class="carousel-caption">
+              <h1>GrillFish</h1>
+              <p class="lead">is rewarding volunteers, will you pledge?</p>
+            </div>
+          </div>
+        </div>
+        <div class="item" href="{{url_for('grillfish')}}">
+          <img src="{{url_static(filename='marketing/grillfish/GrillFishMuralSmall.png')}}" alt="">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>GrillFish</h1>
+              <p class="lead">is welcoming the fight against hunger</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a class="left carousel-control" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+      <a class="right carousel-control" href="#myCarousel" data-slide="next">&rsaquo;</a>
+    </div><!-- /.carousel -->
+
+
+{% endblock %}

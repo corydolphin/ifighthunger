@@ -1,0 +1,211 @@
+
+.id-widget {
+	background: #eee url(images/clean-bg.jpg) no-repeat center top;
+	padding: 0;
+}
+
+.id-product-infobox {
+    padding: 10px;
+    font: 13px arial,freesans,clean,sans-serif;
+	color: #6E6E6E;
+	background: #eee url(images/clean-infobox-bg.jpg) no-repeat center top;
+	border-top: 1px solid #fff;
+	text-shadow: #fff 0 1px 1px;
+}
+
+#poweredbyID span a {
+	color: #333;
+	background: transparent url(http://ignitiondeck.com/id/skyscraper-poweredbyID.png) no-repeat center center;
+}
+
+.id-product-infobox input {
+	color: #6E6E6E;
+}
+
+.main-btn{
+background-color:transparent;
+color: #369ec1;
+-moz-border-radius:5px;
+-webkit-border-radius:5px;
+border-radius:5px;
+/*IE DOES NOT SUPPORT BORDER RADIUS*/
+background-image: -moz-linear-gradient(top, #FAFAFA, #D8D8D8);
+background-image: -webkit-gradient(linear, center top, center bottom, from(#FAFAFA), to(#D8D8D8));
+background-image: -o-linear-gradient(top, #FAFAFA, #D8D8D8);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#b0d839', endColorstr='#88c238');
+/*INNER ELEMENTS MUST NOT BREAK THIS ELEMENTS BOUNDARIES*/
+/*Element must have a height (not auto)*/
+/*All filters must be placed together*/
+-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#D8D8D8')";
+/*Element must have a height (not auto)*/
+/*All filters must be placed together*/
+background-image: linear-gradient(top, #FAFAFA, #D8D8D8);
+-moz-background-clip: padding-box;
+-webkit-background-clip: padding-box;
+background-clip: padding-box;
+font-size: 20px;
+font-weight: normal;
+text-shadow: #fff 0 1px 1px;
+border: 1px solid #fff;
+box-shadow: #ccc 0 0 6px; -webkit-box-shadow: #ccc 0 0 6px; -moz-box-shadow:  #ccc 0 0 6px;
+}
+a.main-btn:link {
+	color: #369ec1;
+}
+a.main-btn:hover,a.main-btn:active {
+	color: #6e6e6e;
+	box-shadow: #fff 0 0 0px; -webkit-box-shadow: #fff 0 0 10px; -moz-box-shadow:  #fff 0 0 10px;
+	text-decoration: none;
+}
+
+.learn-more-button {
+	/*IE DOES NOT SUPPORT BORDER RADIUS*/
+	background-image: -moz-linear-gradient(top, #FAFAFA, #D8D8D8);
+	background-image: -webkit-gradient(linear, center top, center bottom, from(#FAFAFA), to(#D8D8D8));
+	background-image: -o-linear-gradient(top, #FAFAFA, #D8D8D8);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#b0d839', endColorstr='#88c238');
+	/*INNER ELEMENTS MUST NOT BREAK THIS ELEMENTS BOUNDARIES*/
+	/*Element must have a height (not auto)*/
+	/*All filters must be placed together*/
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#D8D8D8')";
+	/*Element must have a height (not auto)*/
+	/*All filters must be placed together*/
+	background-image: linear-gradient(top, #FAFAFA, #D8D8D8);
+	-moz-background-clip: padding-box;
+	-webkit-background-clip: padding-box;
+	background-clip: padding-box;
+	font-size: 20px;
+	text-shadow: #fff 0 1px 1px;
+	border: 1px solid #fff;
+	box-shadow: #ccc 0 0 6px; -webkit-box-shadow: #ccc 0 0 6px; -moz-box-shadow:  #ccc 0 0 6px;
+}
+a.learn-more-button:link {
+	color: #626262;
+}
+a.learn-more-button:hover,a.learn-more-button:active {
+	color: #6e6e6e;
+	box-shadow: #fff 0 0 0px; -webkit-box-shadow: #fff 0 0 10px; -moz-box-shadow:  #fff 0 0 10px;
+	text-decoration: none;
+}
+
+.id-product-infobox .main-btn:hover{
+    text-decoration: none;
+}
+#button_pay {
+	color: #333;
+}
+
+/*.product-wrapper img{
+	display: none;
+}*/
+
+.product-wrapper a {
+	color: #626262;
+}
+.product-wrapper a:hover {
+	color: #333;
+}
+.product-wrapper h2.id-product-title {
+	font: 18px/18px arial,freesans,clean,sans-serif;
+	color: #6E6E6E;
+}
+
+.id-buy-box {
+	padding: 10px 25px 20px 25px;
+	margin: 0;
+    font: 13px arial,freesans,clean,sans-serif;
+	background: transparent url(images/clean-details-bg.png) no-repeat 0 top;
+}
+.id-product-price {
+	color: #6E6E6E;
+	text-shadow: #fff 0 1px 1px;
+
+}
+
+
+
+.pay-form-wrapper td.field input, .pay-form-wrapper td.field textarea{
+border: 1px solid #D8DEE2;
+background-color: white;
+}
+#fancybox-content {
+	background: #eee url(images/clean-bg.jpg) repeat-x center top;
+	-webkit-border-radius: 6px; -moz-border-radius: 6px; border-radius: 6px;
+	color: #333;
+	-webkit-box-shadow: #999 0 0 10px; -moz-box-shadow: #999 0 0 10px; box-shadow: #999 0 0 10px; 
+}
+
+.preorder-form-product-price{
+    font-size: 32px;
+    color: #fff;
+	text-shadow: #000 0 0 5px;
+}
+
+.progress-wrapper{
+	height: 22px !important;
+	background: #dddddd url(images/clean-progressbar.png) repeat-x center;
+	-webkit-border-radius: 12px; -moz-border-radius: 12px; border-radius: 12px;
+	border: 1px solid #ddd;
+}
+.progress-bar{
+	float: left;
+	height: 30px !important;
+	background: #eee url(images/clean-progressbar_fill.png) repeat-x center;
+	-webkit-border-radius: 14px; -moz-border-radius: 14px; border-radius: 14px;
+	-webkit-box-shadow: #aaa 0 2px 3px;
+	margin-top: -5px;
+}
+
+.progress-percentage{
+	text-shadow: #fff 0 1px 1px;
+	font: 20px/30px Arial, sans-serif;
+	color: #626262;
+}
+
+
+
+#share-with-wording{
+    color: #00ADEF;
+}
+
+.share-btn{
+    -moz-border-radius:3px;
+	-webkit-border-radius:3px;
+	border-radius:3px;
+	margin-left: 10px;
+}
+
+.id-product-infobox .id-product-levels .id-level-title {
+	color: #369ec1;
+	font-weight: normal;
+	text-shadow: 1px 1px 1px #ffffff;
+}
+.id-product-infobox .id-product-levels .id-level-title span {
+	color: #636161;
+}
+.id-product-infobox .id-product-levels .id-level-desc {
+	color: #666769;
+	font-weight: normal;
+}
+
+.id-product-infobox .id-product-proposed-end {
+    -webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	background-color: #cfd1d1;
+    border-radius: 5px 5px 5px 5px;
+    color: #666;
+    text-shadow: none;
+}
+
+.id-product-infobox .id-earliest-buyers .id-earliest-buyers-heading {
+	color: #000000;
+}
+
+.id-product-infobox .id-btn-ask-question a {
+	color: #333;
+}
+.id-buy-form-currency {
+	color: #FFFFFF;
+    text-shadow: 0 0 5px #000000;
+}
+
